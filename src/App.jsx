@@ -1,21 +1,13 @@
-import { useState } from "react";
-
 import "./App.css";
 import StepCounter from "./components/StepCounter";
 import PersonalInfo from "./components/PersonalInfo";
-
-const steps = [
-  { no: 1, name: "your info" },
-  { no: 2, name: "select plan" },
-  { no: 3, name: "add-ons" },
-  { no: 4, name: "summary" },
-];
+import useForm from "./contexts/useForm";
+import SelectPlan from "./components/SelectPlan";
+import PickAddons from "./components/PickAddons";
 
 function App() {
-  const [currStep, setCurrStep] = useState(1);
-  function handleStepClick(stepNo) {
-    setCurrStep(stepNo);
-  }
+  const { currentStep, steps } = useForm();
+
   return (
     <div className="container">
       <aside>
@@ -25,13 +17,16 @@ function App() {
               key={step.no}
               stepNo={step.no}
               name={step.name}
-              isActive={step.no === currStep ? true : false}
-              onClick={handleStepClick}
+              isActive={currentStep + 1 === step.no ? true : false}
             />
           ))}
         </ol>
       </aside>
-      <main>{currStep === 1 && <PersonalInfo />}</main>
+      <main>
+        {currentStep === 0 && <PersonalInfo />}
+        {currentStep === 1 && <SelectPlan />}
+        {currentStep === 2 && <PickAddons />}
+      </main>
     </div>
   );
 }

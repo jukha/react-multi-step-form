@@ -21,6 +21,7 @@
   --ff: "Ubuntu", sans-serif;
   --br: 10px;
   --br-sm: 5px;
+  --transition: all 300ms ease-in-out;
 }
 
 body {
@@ -65,14 +66,18 @@ aside ol {
 main {
   margin-inline: auto;
   padding-block: 30px;
+  width: 100%;
+  max-width: 500px;
 }
 .header {
   color: var(--marine-blue);
   font-weight: 700;
   font-size: 30px;
+  margin-bottom: 10px;
 }
 .para {
   margin-bottom: 30px;
+  color: var(--cool-gray);
 }
 
 .form-group {
@@ -83,16 +88,18 @@ main {
   display: inline-block;
   width: 100%;
   font-family: var(--ff);
+  color: var(--marine-blue);
 }
 .form-label {
   margin-bottom: 10px;
-  color: var(--marine-blue);
 }
 
 .form-control {
   border: 1px solid var(--cool-gray);
   padding: 10px 15px;
   border-radius: var(--br-sm);
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 .form-control::placeholder {
   color: var(--cool-gray);
@@ -106,6 +113,7 @@ main {
 }
 .btn-next {
   background-color: var(--marine-blue);
+  margin-left: auto;
 }
 .btn-confirm {
   background-color: var(--purplish-blue);
@@ -117,5 +125,8 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 70px;
+}
+.error {
+  color: red;
 }

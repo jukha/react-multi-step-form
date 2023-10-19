@@ -1,0 +1,50 @@
+.addonsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.addon {
+  border: 1px solid var(--purplish-blue);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: var(--br);
+}
+.active {
+  background-color: var(--magnolia);
+}
+.addon div {
+  flex-grow: 1;
+}
+.addon label {
+  position: relative;
+}
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+.checkbox + span {
+  cursor: pointer;
+  display: inline-block;
+  background: url("/public/icon-checkmark.svg") center/15px no-repeat;
+  width: 25px;
+  height: 25px;
+  background-color: var(--white);
+  border: 1px solid var(--cool-gray);
+  border-radius: 5px;
+}
+.checkbox:checked + span {
+  background-color: var(--purplish-blue);
+}
+.addon h6 {
+  color: var(--marine-blue);
+  font-size: 18px;
+}
+.addon p {
+  color: var(--cool-gray);
+}
+.addon span {
+  color: var(--purplish-blue);
+}

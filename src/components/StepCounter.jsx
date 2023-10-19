@@ -1,9 +1,9 @@
 import styles from "./StepCounter.module.css";
 
-function StepCounter({ stepNo, name, isActive, onClick }) {
+function StepCounter({ stepNo, name, isActive }) {
   return (
     <li>
-      <button className={styles.stepBtn} onClick={() => onClick(stepNo)}>
+      <button className={styles.stepBtn}>
         <span className={`${styles.stepNo} ${isActive ? styles.active : ""}`}>
           {stepNo}
         </span>

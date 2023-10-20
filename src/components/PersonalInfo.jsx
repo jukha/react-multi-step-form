@@ -34,7 +34,10 @@ function PersonalInfo() {
 
   function handleNext() {
     setCheckForError(true);
-    if (!name || !email || !phone) setError();
+    if (!name || !email || !phone) {
+      // setError();
+      // return;
+    }
     nextStep();
   }
 

@@ -1,57 +1,49 @@
-import { useState } from "react";
 import useForm from "../contexts/useForm";
 import styles from "./PickAddons.module.css";
 
-const addons = [
-  {
-    id: 0,
-    name: "Online service",
-    description: "Access to multiplayer games",
-    charges: 1,
-  },
-  {
-    id: 1,
-    name: "Local storage",
-    description: "Extra 1TB of cloud service",
-    charges: 2,
-  },
-  {
-    id: 2,
-    name: "Customizable Profile",
-    description: "Custom theme on your profile",
-    charges: 2,
-  },
-];
-
 function PickAddons() {
-  const { nextStep, prevStep, incrementBill } = useForm();
-  const [selectedAddons, setSelectedAddons] = useState([]);
+  const {
+    bill,
+    addons,
+    currentAddons: selectedAddons,
+    setAddons: setSelectedAddons,
+    planDuration,
+    nextStep,
+    prevStep,
+    incrementBill,
+    sortBillArray,
+  } = useForm();
+
   function handleNext() {
-    let newBills = [];
-
-    if (selectedAddons.length > 0) {
-      newBills = selectedAddons.map((selectedId) => {
-        const addon = addons.find((addon) => addon.id === selectedId);
-
-        return {
-          name: addon.name,
-          type: "addon",
-          duration: null, // You may want to set an appropriate value here
-          charges: addon.charges,
-        };
-      });
-    }
-    incrementBill(newBills);
+    // Change the element order the plan should come before the addons bill
+    sortBillArray();
     nextStep();
   }
-  function handleClickAddon(id) {
-    setSelectedAddons((addons) => {
-      if (addons.includes(id)) {
-        return addons.filter((item) => item !== id);
-      } else {
-        return [...addons, id];
-      }
-    });
+  function handleClickAddon(addonId, currAddonIdx) {
+    const idExists = selectedAddons.some((item) => item?.id === addonId);
+
+    if (idExists) {
+      const updatedAddons = selectedAddons.filter(
+        (item) => item.id !== addonId
+      );
+      setSelectedAddons(updatedAddons);
+    } else setSelectedAddons(addons.find((item) => item.id === addonId));
+
+    const addonBill = {
+      id: addonId,
+      name: addons[currAddonIdx].name,
+      type: "addon",
+      duration: null,
+      charges:
+        planDuration === "monthly"
+          ? addons[currAddonIdx]?.monthlyCharges
+          : addons[currAddonIdx]?.yearlyCharges,
+    };
+    const isAddonAlreadyExistInBill = bill.some((item) => item.id === addonId);
+    if (isAddonAlreadyExistInBill) {
+      incrementBill(bill.filter((item) => item.id !== addonId));
+      return;
+    } else incrementBill(addonBill);
   }
 
   return (
@@ -59,30 +51,40 @@ function PickAddons() {
       <h3 className="header">Pick add-ons</h3>
       <p className="para">Add-ons help enhance your gaming experience.</p>
       <div className={styles.addonsWrapper}>
-        {addons.map((addon) => {
+        {addons.map((addon, idx) => {
           return (
             <a
               key={addon.id}
               className={`${styles.addon} ${
-                selectedAddons?.includes(addon.id) ? styles.active : ""
+                selectedAddons.some((item) => item?.id === addon?.id)
+                  ? styles.active
+                  : ""
               }`}
-              onClick={() => handleClickAddon(addon.id)}
+              onClick={() => handleClickAddon(addon?.id, idx)}
             >
-              <label htmlFor={addon.id}>
+              <label htmlFor={addon?.id}>
                 <input
-                  id={addon.id}
+                  id={addon?.id}
                   className={styles.checkbox}
                   type="checkbox"
-                  checked={selectedAddons?.includes(addon.id)}
-                  onChange={() => handleClickAddon(addon.id)}
+                  checked={selectedAddons.some(
+                    (item) => item?.id === addon?.id
+                  )}
+                  onChange={() => {}}
                 />
                 <span></span>
               </label>
+              <h1>{addon.id}</h1>
               <div>
                 <h6>{addon.name}</h6>
                 <p>{addon.description}</p>
               </div>
-              <span>+${addon.charges}/mo</span>
+              {planDuration === "monthly" && (
+                <span>+${addon.monthlyCharges}/mo</span>
+              )}
+              {planDuration === "yearly" && (
+                <span>+${addon.yearlyCharges}/yr</span>
+              )}
             </a>
           );
         })}

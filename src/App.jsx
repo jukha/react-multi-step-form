@@ -4,6 +4,7 @@ import PersonalInfo from "./components/PersonalInfo";
 import useForm from "./contexts/useForm";
 import SelectPlan from "./components/SelectPlan";
 import PickAddons from "./components/PickAddons";
+import FinishUp from "./components/FinishUp";
 
 function App() {
   const { currentStep, steps } = useForm();
@@ -26,6 +27,7 @@ function App() {
         {currentStep === 0 && <PersonalInfo />}
         {currentStep === 1 && <SelectPlan />}
         {currentStep === 2 && <PickAddons />}
+        {currentStep === 3 && <FinishUp />}
       </main>
     </div>
   );

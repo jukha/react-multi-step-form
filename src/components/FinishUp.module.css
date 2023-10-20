@@ -1,0 +1,33 @@
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 20px;
+}
+
+.total h6 {
+  color: var(--purplish-blue);
+}
+.textRight {
+  text-align: right;
+}
+.table {
+  background-color: var(--magnolia);
+  padding: 20px;
+  border-radius: var(--br);
+}
+.table tr:nth-child(1) td {
+  font-weight: 700;
+  color: var(--marine-blue);
+}
+.table tr td::first-letter{
+    text-transform: uppercase;
+}
+.table tr td {
+    color: var(--cool-gray);
+}
+.changePlanBtn {
+  color: var(--cool-gray);
+  font-weight: normal;
+  text-decoration: underline;
+}

@@ -1,55 +1,71 @@
-import { useState } from "react";
 import useForm from "../contexts/useForm";
 import styles from "./SelectPlan.module.css";
 
-const plans = [
-  {
-    id: 0,
-    name: "arcade",
-    monthlyCharges: 9,
-    yearlyCharges: 90,
-    icon: "/icon-arcade.svg",
-  },
-  {
-    id: 1,
-    name: "advanced",
-    monthlyCharges: 12,
-    yearlyCharges: 120,
-    icon: "/icon-advanced.svg",
-  },
-  {
-    id: 2,
-    name: "pro",
-    monthlyCharges: 15,
-    yearlyCharges: 150,
-    icon: "/icon-pro.svg",
-  },
-];
-
 function SelectPlan() {
-  const { nextStep, prevStep, incrementBill } = useForm();
-  const [planDuration, setPlanDuration] = useState("monthly");
-  const [currPlan, setCurrPlan] = useState(0);
+  const {
+    bill,
+    nextStep,
+    planDuration,
+    togglePlanDuration,
+    prevStep,
+    incrementBill,
+    currentPlan,
+    setPlan: setCurrentPlan,
+    plans,
+    error,
+    setError,
+    removeError,
+  } = useForm();
 
   function handleToggle() {
-    if (planDuration === "monthly") setPlanDuration("yearly");
-    else setPlanDuration("monthly");
+    togglePlanDuration();
   }
-
   function handleNext() {
-    // {name: 'arcade', type: 'plan', charges: '9'}
-    const bill = {
-      name: plans[currPlan].name,
+    if (!bill.length > 0) {
+      setError();
+      return;
+    } else {
+      removeError();
+      // change duration of already added plan
+      const updatedBill = bill.map((item) => {
+        if (item.type === "plan") {
+          console.log(
+            "type plan found and state planDuration is",
+            planDuration
+          );
+          return {
+            ...item,
+            duration: planDuration,
+          };
+        }
+        return item;
+      });
+      incrementBill(updatedBill);
+      nextStep();
+    }
+  }
+  function handleClick(currPlanId) {
+    setCurrentPlan(currPlanId);
+    const planBill = {
+      id: plans[currPlanId].id,
+      name: plans[currPlanId].name,
       type: "plan",
       duration: planDuration,
       charges:
         planDuration === "monthly"
-          ? plans[currPlan].monthlyCharges
-          : plans[currPlan].yearlyCharges,
+          ? plans[currPlanId].monthlyCharges
+          : plans[currPlanId].yearlyCharges,
     };
-    incrementBill(bill);
-    nextStep();
-    console.log('hi');
+    console.log("planbill", planBill);
+    const samePlanAlreadyExistInBill = bill.some(
+      (item) => item.id === currPlanId
+    );
+    if (samePlanAlreadyExistInBill) {
+      return;
+    } else {
+      const newBillData = bill.filter((item) => item.type !== "plan"); //remove any prior plan
+      incrementBill([...newBillData, planBill]);
+    }
   }
 
   return (
@@ -62,9 +78,12 @@ function SelectPlan() {
             <a
               key={plan.id}
               className={`${styles.plan} ${
-                plan.id === currPlan ? styles.active : ""
+                plan.id === currentPlan &&
+                bill.some((item) => item.id === plan.id)
+                  ? styles.active
+                  : ""
               }`}
-              onClick={() => setCurrPlan(plan.id)}
+              onClick={() => handleClick(plan.id)}
             >
               <img src={plan.icon} />
               <h3>{plan.name}</h3>
@@ -81,12 +100,18 @@ function SelectPlan() {
           );
         })}
       </div>
+      <br />
+      {error && <p className="error">Please select atleast one plan.</p>}
       <div className={styles.durationToggler}>
         <span className={`${planDuration === "monthly" ? styles.active : ""}`}>
           Monthly
         </span>
         <label className={styles.switch}>
-          <input type="checkbox" onChange={handleToggle} />
+          <input
+            type="checkbox"
+            checked={planDuration !== "monthly"}
+            onChange={handleToggle}
+          />
           <span className={`${styles.slider} ${styles.round}`}></span>
         </label>
         <span className={`${planDuration === "yearly" ? styles.active : ""}`}>

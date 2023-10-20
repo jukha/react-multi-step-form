@@ -73,6 +73,8 @@ main {
   padding-block: 30px;
   width: 100%;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 .header {
   color: var(--marine-blue);
@@ -131,7 +133,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 70px;
+  margin-top: auto;
 }
 .error {
   color: red;

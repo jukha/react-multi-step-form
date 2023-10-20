@@ -60,8 +60,8 @@ function FinishUp() {
         <a className="btn btn-back" onClick={prevStep}>
           Go Back
         </a>
-        <a className="btn btn-next" onClick={handleNext}>
-          Next Step
+        <a className="btn btn-confirm" onClick={handleNext}>
+          Confirm
         </a>
       </div>
     </>

@@ -119,6 +119,7 @@ function SelectPlan() {
       </div>
       <br />
       {error && <p className="error">Please select atleast one plan.</p>}
+      <br />
       <div className={styles.durationToggler}>
         <span className={`${planDuration === "monthly" ? styles.active : ""}`}>
           Monthly

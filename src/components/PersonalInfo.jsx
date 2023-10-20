@@ -81,9 +81,9 @@ function PersonalInfo() {
         ) : null}
       </FormGroup>
       <FormGroup>
-        <FormLabel label="Name" />
+        <FormLabel label="Phone" />
         <FormControl
-          placeholder="e.g. Stephen King"
+          placeholder="123456789"
           name="phone"
           value={formik.values.phone}
           onChange={formik.handleChange}

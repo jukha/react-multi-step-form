@@ -23,7 +23,6 @@
   font-size: 16px;
   text-transform: capitalize;
   margin-block: 40px 5px;
-
 }
 .plan p {
   font-size: 14px;
@@ -92,4 +91,21 @@ input:checked + .slider:before {
   -webkit-transform: translateX(27px);
   -ms-transform: translateX(27px);
   transform: translateX(27px);
+}
+
+@media only screen and (max-width: 576px) {
+  .plansWrapper {
+    flex-direction: column;
+  }
+  .plan {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .plan h3 {
+    margin: 0 0 5px 0;
+  }
+  .durationToggler {
+    margin-top: unset;
+  }
 }

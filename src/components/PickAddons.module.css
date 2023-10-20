@@ -52,3 +52,18 @@ span.checkbox.checked::after {
 .addon span {
   color: var(--purplish-blue);
 }
+
+@media only screen and (max-width: 576px) {
+  .addon {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .addon h6 {
+    font-size: 16px;
+  }
+  .addon p,
+  .addon span {
+    font-size: 14px;
+  }
+}

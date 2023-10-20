@@ -73,19 +73,6 @@ function PickAddons() {
                     : ""
                 }`}
               ></span>
-              {/* <label htmlFor={addon?.id}>
-                <input
-                  id={addon?.id}
-                  className={styles.checkbox}
-                  type="checkbox"
-                  checked={selectedAddons.some(
-                    (item) => item?.id === addon?.id
-                  )}
-                  onChange={() => {}}
-                />
-                <span></span>
-              </label> */}
-              <h1>{addon.id}</h1>
               <div>
                 <h6>{addon.name}</h6>
                 <p>{addon.description}</p>

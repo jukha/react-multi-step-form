@@ -99,16 +99,20 @@ function SelectPlan() {
               onClick={() => handleClick(plan.id)}
             >
               <img src={plan.icon} />
-              <h3>{plan.name}</h3>
-              {planDuration === "monthly" && <p>${plan.monthlyCharges}/mo</p>}
-              {planDuration === "yearly" && (
-                <>
-                  <p>${plan.yearlyCharges}/yr</p>
-                  <p style={{ color: "var(--marine-blue)", marginTop: "10px" }}>
-                    2 months free
-                  </p>
-                </>
-              )}
+              <div>
+                <h3>{plan.name}</h3>
+                {planDuration === "monthly" && <p>${plan.monthlyCharges}/mo</p>}
+                {planDuration === "yearly" && (
+                  <>
+                    <p>${plan.yearlyCharges}/yr</p>
+                    <p
+                      style={{ color: "var(--marine-blue)", marginTop: "10px" }}
+                    >
+                      2 months free
+                    </p>
+                  </>
+                )}
+              </div>
             </a>
           );
         })}

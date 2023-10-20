@@ -5,10 +5,10 @@ import useForm from "./contexts/useForm";
 import SelectPlan from "./components/SelectPlan";
 import PickAddons from "./components/PickAddons";
 import FinishUp from "./components/FinishUp";
+import Thankyou from "./components/Thankyou";
 
 function App() {
-  const { currentStep, steps } = useForm();
-
+  const { bill, currentStep, steps } = useForm();
   return (
     <div className="container">
       <aside>
@@ -27,7 +27,8 @@ function App() {
         {currentStep === 0 && <PersonalInfo />}
         {currentStep === 1 && <SelectPlan />}
         {currentStep === 2 && <PickAddons />}
-        {currentStep === 3 && <FinishUp />}
+        {currentStep === 3 && bill.length !== 0 && <FinishUp />}
+        {currentStep === 3 && bill.length === 0 && <Thankyou />}
       </main>
     </div>
   );

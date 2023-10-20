@@ -4,6 +4,7 @@ import styles from "./PickAddons.module.css";
 function PickAddons() {
   const {
     bill,
+    calcTotalBill,
     addons,
     currentAddons: selectedAddons,
     setAddons: setSelectedAddons,
@@ -17,6 +18,7 @@ function PickAddons() {
   function handleNext() {
     // Change the element order the plan should come before the addons bill
     sortBillArray();
+    calcTotalBill();
     nextStep();
   }
   function handleClickAddon(addonId, currAddonIdx) {
@@ -33,7 +35,9 @@ function PickAddons() {
       id: addonId,
       name: addons[currAddonIdx].name,
       type: "addon",
-      duration: null,
+      duration: planDuration,
+      monthlyCharges: addons[currAddonIdx].monthlyCharges,
+      yearlyCharges: addons[currAddonIdx].yearlyCharges,
       charges:
         planDuration === "monthly"
           ? addons[currAddonIdx]?.monthlyCharges
@@ -62,7 +66,14 @@ function PickAddons() {
               }`}
               onClick={() => handleClickAddon(addon?.id, idx)}
             >
-              <label htmlFor={addon?.id}>
+              <span
+                className={`${styles.checkbox} ${
+                  selectedAddons.some((item) => item?.id === addon?.id)
+                    ? styles.checked
+                    : ""
+                }`}
+              ></span>
+              {/* <label htmlFor={addon?.id}>
                 <input
                   id={addon?.id}
                   className={styles.checkbox}
@@ -73,7 +84,7 @@ function PickAddons() {
                   onChange={() => {}}
                 />
                 <span></span>
-              </label>
+              </label> */}
               <h1>{addon.id}</h1>
               <div>
                 <h6>{addon.name}</h6>

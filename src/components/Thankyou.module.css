@@ -1,0 +1,14 @@
+.thankYouWrapper {
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.thankYouWrapper p {
+  max-width: 440px;
+  margin-inline: auto;
+}
+.thanksImg {
+  margin-bottom: 30px;
+}

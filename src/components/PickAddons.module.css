@@ -21,23 +21,26 @@
 .addon label {
   position: relative;
 }
-.checkbox {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-}
-.checkbox + span {
+
+span.checkbox {
   cursor: pointer;
   display: inline-block;
-  background: url("/public/icon-checkmark.svg") center/15px no-repeat;
   width: 25px;
   height: 25px;
   background-color: var(--white);
   border: 1px solid var(--cool-gray);
   border-radius: 5px;
+  position: relative;
 }
-.checkbox:checked + span {
+span.checkbox.checked {
   background-color: var(--purplish-blue);
+}
+span.checkbox.checked::after {
+  content: "";
+  background: url("/public/icon-checkmark.svg") center/15px no-repeat;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 }
 .addon h6 {
   color: var(--marine-blue);

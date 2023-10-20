@@ -1,10 +1,13 @@
+import { useState } from "react";
 import useForm from "../contexts/useForm";
 import styles from "./SelectPlan.module.css";
 
 function SelectPlan() {
+  const [error, setError] = useState(false);
   const {
     bill,
     nextStep,
+    addons,
     planDuration,
     togglePlanDuration,
     prevStep,
@@ -12,9 +15,6 @@ function SelectPlan() {
     currentPlan,
     setPlan: setCurrentPlan,
     plans,
-    error,
-    setError,
-    removeError,
   } = useForm();
 
   function handleToggle() {
@@ -22,23 +22,35 @@ function SelectPlan() {
   }
   function handleNext() {
     if (!bill.length > 0) {
-      setError();
+      setError(true);
       return;
     } else {
-      removeError();
-      // change duration of already added plan
+      setError(false);
+      // change duration of already added plans (plan + addon)
       const updatedBill = bill.map((item) => {
         if (item.type === "plan") {
-          console.log(
-            "type plan found and state planDuration is",
-            planDuration
-          );
           return {
             ...item,
             duration: planDuration,
+            charges:
+              planDuration === "monthly"
+                ? plans[item.id].monthlyCharges
+                : plans[item.id].yearlyCharges,
+          };
+        } else {
+          let addonIndexInAddonsArr = addons.findIndex(
+            (addon) => addon.id === item.id
+          );
+
+          return {
+            ...item,
+            duration: planDuration,
+            charges:
+              planDuration === "monthly"
+                ? addons[addonIndexInAddonsArr].monthlyCharges
+                : addons[addonIndexInAddonsArr].yearlyCharges,
           };
         }
-        return item;
       });
       incrementBill(updatedBill);
       nextStep();
@@ -51,12 +63,13 @@ function SelectPlan() {
       name: plans[currPlanId].name,
       type: "plan",
       duration: planDuration,
+      monthlyCharges: plans[currPlanId].monthlyCharges,
+      yearlyCharges: plans[currPlanId].yearlyCharges,
       charges:
         planDuration === "monthly"
           ? plans[currPlanId].monthlyCharges
           : plans[currPlanId].yearlyCharges,
     };
-    console.log("planbill", planBill);
     const samePlanAlreadyExistInBill = bill.some(
       (item) => item.id === currPlanId
     );

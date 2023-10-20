@@ -1,16 +1,15 @@
-
-
-function FormControl({ placeholder, value, onChange, checkForError }) {
+function FormControl({ name, placeholder, value, onChange, onBlur }) {
   return (
     <>
       <input
         className="form-control"
+        name={name}
         value={value}
-        onChange={onChange}
         type="text"
         placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
       />
-      {checkForError && !value && <span className="error">Required.</span>}
     </>
   );
 }

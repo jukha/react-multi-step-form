@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createContext, useReducer } from "react";
 
 const FormContext = createContext();
@@ -60,21 +61,20 @@ const initialState = {
   currentAddons: [],
   currentPlan: -1,
   currentStep: 0,
-  error: false,
+  totalBill: 0,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "next":
-      return { ...state, currentStep: state.currentStep + 1 };
-    case "previous":
+    case "NEXT":
+      if (state.currentStep === 3) {
+        return { ...state, currentStep: 3 };
+      } else return { ...state, currentStep: state.currentStep + 1 };
+    case "PREVIOUS":
       return { ...state, currentStep: state.currentStep - 1 };
-    case "setError":
-      return { ...state, error: true };
-    case "removeError":
-      return { ...state, error: false };
+    case "SKIP_TO_PLAN_STEP":
+      return { ...state, currentStep: 1 };
     case "SORT_BILL_ARRAY": {
-      /* eslint-disable */
       const sortedArray = [...state.bill].sort((a, b) => {
         return a.type === "plan" ? -1 : 1;
       });
@@ -84,9 +84,9 @@ function reducer(state, action) {
         bill: sortedArray,
       };
     }
-    case "setPlan":
+    case "SET_PLAN":
       return { ...state, currentPlan: action.payload };
-    case "setAddons":
+    case "SET_ADDONS":
       if (Array.isArray(action.payload)) {
         let temp = [];
         for (let i = 0; i < action.payload.length; i++) {
@@ -98,11 +98,15 @@ function reducer(state, action) {
           ...state,
           currentAddons: [...state.currentAddons, action.payload],
         };
-    case "togglePlanDuration":
+    case "TOTAL_BILL": {
+      const billSum = state.bill.reduce((acc, item) => item.charges + acc, 0);
+      return { ...state, totalBill: billSum };
+    }
+    case "TOGGLE_PLAN_DURATION":
       if (state.planDuration === "monthly") {
         return { ...state, planDuration: "yearly" };
       } else return { ...state, planDuration: "monthly" };
-    case "incrementBill":
+    case "INCREMENT_BILL":
       if (Array.isArray(action.payload)) {
         let temp = [];
         for (let i = 0; i < action.payload.length; i++) {
@@ -110,7 +114,6 @@ function reducer(state, action) {
         }
         return { ...state, bill: temp };
       } else return { ...state, bill: [...state.bill, action.payload] };
-
     default:
       throw new Error("Unknown action type");
   }
@@ -127,47 +130,45 @@ function FormProvider({ children }) {
       bill,
       steps,
       currentStep,
-      error,
+      totalBill,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
   function nextStep() {
-    dispatch({ type: "next" });
+    dispatch({ type: "NEXT" });
   }
   function prevStep() {
-    dispatch({ type: "previous" });
+    dispatch({ type: "PREVIOUS" });
   }
-  function setError() {
-    dispatch({ type: "setError" });
-  }
-  function removeError() {
-    dispatch({ type: "removeError" });
-  }
+
   function incrementBill(bills) {
-    dispatch({ type: "incrementBill", payload: bills });
+    dispatch({ type: "INCREMENT_BILL", payload: bills });
   }
   function togglePlanDuration() {
-    dispatch({ type: "togglePlanDuration" });
+    dispatch({ type: "TOGGLE_PLAN_DURATION" });
   }
   function setPlan(planNo) {
-    dispatch({ type: "setPlan", payload: planNo });
+    dispatch({ type: "SET_PLAN", payload: planNo });
   }
   function setAddons(addons) {
-    dispatch({ type: "setAddons", payload: addons });
+    dispatch({ type: "SET_ADDONS", payload: addons });
   }
   function sortBillArray() {
     dispatch({ type: "SORT_BILL_ARRAY" });
+  }
+  function skipToPlanStep() {
+    dispatch({ type: "SKIP_TO_PLAN_STEP" });
+  }
+  function calcTotalBill() {
+    dispatch({ type: "TOTAL_BILL" });
   }
   return (
     <FormContext.Provider
       value={{
         steps,
         currentStep,
-        error,
         nextStep,
         prevStep,
-        setError,
-        removeError,
         incrementBill,
         bill,
         planDuration,
@@ -179,6 +180,9 @@ function FormProvider({ children }) {
         setAddons,
         currentAddons,
         sortBillArray,
+        skipToPlanStep,
+        totalBill,
+        calcTotalBill,
       }}
     >
       {children}

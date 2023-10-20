@@ -1,9 +1,10 @@
+import img from "./../../public/icon-thank-you.svg";
 import styles from "./Thankyou.module.css";
 function Thankyou() {
   return (
     <div className={styles.thankYouWrapper}>
       <div className={styles.thanksImg}>
-        <img src="/icon-thank-you.svg" />
+        <img src={img} />
       </div>
       <h3 className="header">Thank you!</h3>
       <p className="para">

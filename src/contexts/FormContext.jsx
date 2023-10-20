@@ -1,6 +1,10 @@
 /* eslint-disable */
 import { createContext, useReducer } from "react";
 
+import arcadeImage from "./../../public/icon-arcade.svg";
+import advancedImage from "./../../public/icon-advanced.svg";
+import proImage from "./../../public/icon-pro.svg";
+
 const FormContext = createContext();
 
 const initialState = {
@@ -16,21 +20,21 @@ const initialState = {
       name: "arcade",
       monthlyCharges: 9,
       yearlyCharges: 90,
-      icon: "/icon-arcade.svg",
+      icon: arcadeImage,
     },
     {
       id: 1,
       name: "advanced",
       monthlyCharges: 12,
       yearlyCharges: 120,
-      icon: "/icon-advanced.svg",
+      icon: advancedImage,
     },
     {
       id: 2,
       name: "pro",
       monthlyCharges: 15,
       yearlyCharges: 150,
-      icon: "/icon-pro.svg",
+      icon: proImage,
     },
   ],
   addons: [
